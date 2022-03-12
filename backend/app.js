@@ -5,64 +5,19 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 
 require("dotenv/config"); // dapat taas sy sa const api = process.env.API_URL; mag cause ug error
-
 const api = process.env.API_URL;
+const productsRouter = require("./routers/products");
+const usersRouter = require("./routers/user");
 
-// Middleware
+//// Middleware
 app.use(express.json());
 app.use(morgan("tiny"));
 
-//// Example of Product schema
-const productSchema = mongoose.Schema({
-  name: String,
-  image: String,
-  countInStock: {
-    require: true,
-    type: Number,
-  },
-});
-//// Example of Product Model
-const Product = mongoose.model("Product", productSchema);
+const Product = require("./models/product");
 
-app.get(`${api}/products`, async (req, res) => {
-  const productList = await Product.find();
-
-  if (!productList) {
-    res.status(500).json({ success: false });
-  }
-  res.send(productList);
-
-  // const product = {
-  //   id: 1,
-  //   name: "Hair Dresser",
-  //   image: "some_url",
-  // };
-  // res.send(product);
-});
-
-app.post(`${api}/products`, (req, res) => {
-  const product = new Product({
-    name: req.body.name,
-    image: req.body.image,
-    countInStock: req.body.countInStock,
-  });
-
-  product
-    .save()
-    .then((createdProduct) => {
-      res.status(201).json(createdProduct);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: err,
-        success: false,
-      });
-    });
-
-  // const newProduct = req.body;
-  // console.log(newProduct);
-  // res.send(newProduct);
-});
+//// Routers
+app.use(`${api}/products`, productsRouter);
+app.use(`${api}/users`, usersRouter);
 
 mongoose
   .connect(process.env.CONNECTION_STRING, {
