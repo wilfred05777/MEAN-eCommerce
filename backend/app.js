@@ -12,7 +12,18 @@ const api = process.env.API_URL;
 app.use(express.json());
 app.use(morgan("tiny"));
 
-//// http://localhost:3000/api/v1/products
+//// Example of Product schema
+const productSchema = mongoose.Schema({
+  name: String,
+  image: String,
+  countInStock: {
+    require: true,
+    type: Number,
+  },
+});
+//// Example of Product Model
+const Product = mongoose.model("Product", productSchema);
+
 app.get(`${api}/products`, (req, res) => {
   const product = {
     id: 1,
@@ -23,9 +34,26 @@ app.get(`${api}/products`, (req, res) => {
 });
 
 app.post(`${api}/products`, (req, res) => {
-  const newProduct = req.body;
-  console.log(newProduct);
-  res.send(newProduct);
+  const product = new Product({
+    name: req.body.name,
+    image: req.body.image,
+    countInStock: req.body.countInStock,
+  });
+  product
+    .save()
+    .then((createdProduct) => {
+      res.status(201).json(createdProduct);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        error: err,
+        success: false,
+      });
+    });
+
+  // const newProduct = req.body;
+  // console.log(newProduct);
+  // res.send(newProduct);
 });
 
 mongoose
