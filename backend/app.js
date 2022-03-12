@@ -8,7 +8,9 @@ require("dotenv/config"); // dapat taas sy sa const api = process.env.API_URL; m
 const api = process.env.API_URL;
 const productsRouter = require("./routers/products");
 const usersRouter = require("./routers/users");
-const ordersRouter = require("./routers/users");
+const ordersRouter = require("./routers/orders");
+const orderItemsRouter = require("./routers/orderItems");
+const categoriesRouter = require("./routers/orders");
 
 //// Middleware
 app.use(express.json());
@@ -20,6 +22,8 @@ const Product = require("./models/product");
 app.use(`${api}/products`, productsRouter);
 app.use(`${api}/users`, usersRouter);
 app.use(`${api}/orders`, ordersRouter);
+app.use(`${api}/categories`, categoriesRouter);
+app.use(`${api}/orderitems`, orderItemsRouter);
 
 mongoose
   .connect(process.env.CONNECTION_STRING, {
