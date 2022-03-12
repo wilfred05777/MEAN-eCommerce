@@ -1,10 +1,19 @@
 const mongoose = require("mongoose");
 
 const categoriesSchema = mongoose.Schema({
-  name: String,
-  color: String,
-  icon: String,
-  image: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+  },
+  icon: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
 });
 
 exports.Categories = mongoose.model("Categories", catergoriesSchema);
