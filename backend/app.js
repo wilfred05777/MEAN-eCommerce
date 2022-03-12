@@ -24,13 +24,20 @@ const productSchema = mongoose.Schema({
 //// Example of Product Model
 const Product = mongoose.model("Product", productSchema);
 
-app.get(`${api}/products`, (req, res) => {
-  const product = {
-    id: 1,
-    name: "Hair Dresser",
-    image: "some_url",
-  };
-  res.send(product);
+app.get(`${api}/products`, async (req, res) => {
+  const productList = await Product.find();
+
+  if (!productList) {
+    res.status(500).json({ success: false });
+  }
+  res.send(productList);
+
+  // const product = {
+  //   id: 1,
+  //   name: "Hair Dresser",
+  //   image: "some_url",
+  // };
+  // res.send(product);
 });
 
 app.post(`${api}/products`, (req, res) => {
@@ -39,6 +46,7 @@ app.post(`${api}/products`, (req, res) => {
     image: req.body.image,
     countInStock: req.body.countInStock,
   });
+
   product
     .save()
     .then((createdProduct) => {
