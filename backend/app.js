@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 require("dotenv/config"); // dapat taas sy sa const api = process.env.API_URL; mag cause ug error
 const api = process.env.API_URL;
 const productsRouter = require("./routers/products");
-const usersRouter = require("./routers/user");
+const usersRouter = require("./routers/users");
+const ordersRouter = require("./routers/users");
 
 //// Middleware
 app.use(express.json());
@@ -18,6 +19,7 @@ const Product = require("./models/product");
 //// Routers
 app.use(`${api}/products`, productsRouter);
 app.use(`${api}/users`, usersRouter);
+app.use(`${api}/orders`, ordersRouter);
 
 mongoose
   .connect(process.env.CONNECTION_STRING, {
