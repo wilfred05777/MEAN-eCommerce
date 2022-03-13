@@ -7,7 +7,7 @@ const cors = require("cors");
 
 require("dotenv/config"); // dapat taas sy sa const api = process.env.API_URL; mag cause ug error
 
-app.use(corse());
+app.use(cors());
 app.options("*", cors());
 
 const api = process.env.API_URL;
@@ -15,7 +15,7 @@ const productsRouter = require("./routers/products");
 const usersRouter = require("./routers/users");
 const ordersRouter = require("./routers/orders");
 const orderItemsRouter = require("./routers/orderItems");
-const categoriesRouter = require("./routers/orders");
+const categoriesRouter = require("./routers/categories");
 
 //// Middleware
 app.use(express.json());
