@@ -3,6 +3,7 @@ const { Category } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const asyncErrorHandler = require("async-error-handler");
 
 router.get(`/`, async (req, res) => {
   //// Learning on -exclude and show only specifice fields like: name image
@@ -144,7 +145,9 @@ router.delete("/:id", (req, res) => {
 });
 
 router.get(`/get/count`, async (req, res) => {
-  const productCount = await Product.countDocuments((count) => count);
+  // const productCount = await Product.countDocuments((count) => count);
+  // const productCount = await Product.countDocuments({ count: count });
+  const productCount = await Product.countDocuments();
 
   if (!productCount) {
     res.status(500).json({ success: false });
@@ -153,6 +156,20 @@ router.get(`/get/count`, async (req, res) => {
     productCount: productCount,
   });
 });
+
+// router.get(
+//   `/get/count`,
+//   asyncErrorHandler(async (req, res) => {
+//     const productCount = await Product.countDocuments((count) => count);
+
+//     if (!productCount) {
+//       res.status(500).json({ success: false });
+//     }
+//     res.send({
+//       productCount: productCount,
+//     });
+//   })
+// );
 
 router.get(`/get/featured/:count`, async (req, res) => {
   const count = req.params.count ? req.params.count : 0;
