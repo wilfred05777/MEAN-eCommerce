@@ -3,12 +3,18 @@ const { Category } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const asyncErrorHandler = require("async-error-handler");
+// const asyncErrorHandler = require("async-error-handler");
 
 router.get(`/`, async (req, res) => {
+  // localhost:3000/api/v1/products?categories=2342342,234234
+  let filter = {};
+  if (req.query.categories) {
+    filter = { category: req.query.categories.split(",") };
+  }
+
   //// Learning on -exclude and show only specifice fields like: name image
   // const productList = await Product.find().select("name image -_id");
-  const productList = await Product.find().populate("category");
+  const productList = await Product.find(filter).populate("category");
 
   if (!productList) {
     res.status(500).json({ success: false });
