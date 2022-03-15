@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get(`/`, async (req, res) => {
+  //// Learning on -exclude and show only specifice fields like: name image
   const productList = await Product.find().select("name image -_id");
 
   if (!productList) {
