@@ -153,8 +153,8 @@ router.post("/register", async (req, res) => {
 });
 
 // @desc DELETE Single User by ID
-// @route POST /api/v1/users/:id
-// @access private
+// @route DELETE /api/v1/users/:id
+// @access private 53. Get User Count REST API
 router.delete("/:id", (req, res) => {
   User.findByIdAndRemove(req.params.id)
     .then((user) => {
@@ -173,7 +173,7 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-// @desc DELETE Single User by ID
+// @desc /get/count getting the number of users
 // @route POST /api/v1/users/get/count
 // @access public - 53. Get User Count REST API
 router.get(`/get/count`, async (req, res) => {
