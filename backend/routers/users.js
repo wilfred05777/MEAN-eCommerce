@@ -175,7 +175,7 @@ router.delete("/:id", (req, res) => {
 
 // @desc DELETE Single User by ID
 // @route POST /api/v1/users/get/count
-// @access public
+// @access public - 53. Get User Count REST API
 router.get(`/get/count`, async (req, res) => {
   const userCount = await User.countDocuments((count) => count);
 
