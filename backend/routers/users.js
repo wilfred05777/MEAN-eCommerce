@@ -1,7 +1,7 @@
 const { Users } = require("../models/user");
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 router.get(`/`, async (req, res) => {
   const userList = await Users.find().select("-passwordHash");
@@ -25,6 +25,7 @@ router.post(`/`, async (req, res) => {
   let user = new Users({
     name: req.body.name,
     email: req.body.email,
+    // passwordHash: req.body.passwordHash,
     passwordHash: bcrypt.hashSync(req.body.password, 10),
     phone: req.body.phone,
     isAdmin: req.body.isAdmin,
@@ -34,17 +35,19 @@ router.post(`/`, async (req, res) => {
     city: req.body.city,
     country: req.body.country,
   });
-  user
-    .save()
-    .then((createUser) => {
-      res.status(201).json(createUser);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: err,
-        success: false,
-      });
-    });
+  user = await user.save();
+  res.send(user);
+  // user
+  //   .save()
+  //   .then((createUser) => {
+  //     res.status(201).json(createUser);
+  //   })
+  //   .catch((error) => {
+  //     res.status(500).json({
+  //       error: err,
+  //       success: false,
+  //     });
+  //   });
 });
 
 module.exports = router;
