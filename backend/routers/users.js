@@ -3,7 +3,11 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 
+// @desc View all user
+// @route GET /api/v1/users
+// @access Public
 router.get(`/`, async (req, res) => {
+  // const userList = await Users.find();
   const userList = await Users.find().select("-passwordHash");
   if (!userList) {
     res.status(500).json({ success: false });
@@ -11,7 +15,11 @@ router.get(`/`, async (req, res) => {
   res.send(userList);
 });
 
+// @desc View single user
+// @route GET /api/v1/users
+// @access ??
 router.get(`/:id`, async (req, res) => {
+  // const user = await Users.findById(req.params.id);
   const user = await Users.findById(req.params.id).select("-passwordHash");
 
   if (!user) {
@@ -19,8 +27,12 @@ router.get(`/:id`, async (req, res) => {
       .status(500)
       .json({ message: "The User with the given ID was not found" });
   }
+  res.status(200).send(user);
 });
 
+// @desc POST New User
+// @route POST /api/v1/users
+// @access Public
 router.post(`/`, async (req, res) => {
   let user = new Users({
     name: req.body.name,
