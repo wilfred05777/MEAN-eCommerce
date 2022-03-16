@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const authJwt = require("./helpers/jwt");
 
 require("dotenv/config"); // dapat taas sy sa const api = process.env.API_URL; mag cause ug error
 
@@ -20,8 +21,7 @@ const categoriesRouter = require("./routers/categories");
 //// Middleware
 app.use(express.json());
 app.use(morgan("tiny"));
-
-const Product = require("./models/product");
+app.use(authJwt());
 
 //// Routers
 app.use(`${api}/products`, productsRouter);
