@@ -16,7 +16,7 @@ function authJwt() {
     ],
   });
 }
-
+// // isRevoked 52. Users & Admins
 async function isRevoked(req, payload, done) {
   if (!payload.isAdmin) {
     done(null, true);
