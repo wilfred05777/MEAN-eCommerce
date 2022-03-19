@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Orders } = require("../models/order");
+const { OrderItem } = require("../models/order-item");
 
 router.get(`/`, async (req, res) => {
   const orderList = await Order.find()
@@ -43,7 +44,9 @@ router.post("/", async (req, res) => {
       return newOrderItem._id;
     })
   );
+
   const orderItemsIdsResolved = await orderItemsIds;
+  // console.log(orderItemsIds);
 
   const totalPrices = await Promise.all(
     orderItemsIdsResolved.map(async (orderItemId) => {
