@@ -3,6 +3,7 @@ const { Category } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const multer = require("multer");
 // const asyncErrorHandler = require("async-error-handler");
 
 const storage = multer.diskStorage({
