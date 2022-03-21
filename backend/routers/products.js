@@ -8,12 +8,12 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "/public/uploads");
+    cb(null, "public/uploads");
   },
   filename: function (req, file, cb) {
     // const fileName = file.originalname.replace(" ", "-");
     const fileName = file.originalname.split(" ").join("-");
-    cb(null, fileName + "-" + Date.now());
+    cb(null, `${fileName}-${Date.now()}.${extension}`);
   },
 });
 
