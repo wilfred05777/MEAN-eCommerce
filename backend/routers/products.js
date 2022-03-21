@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
     if (isValid) {
       uploadError = null;
     }
-    cb(null, "public/uploads");
+    cb(uploadError, "public/uploads");
   },
   filename: function (req, file, cb) {
     // const fileName = file.originalname.replace(" ", "-");
@@ -95,7 +95,7 @@ router.post(`/`, uploadOptions.single("image"), async (req, res) => {
   if (!category) return res.status(400).send("Invalid Category");
 
   const fileName = req.fileName;
-  const basePath = `${req.protocol}://${req.get("host")}/public/upload`;
+  const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
   let product = new Product({
     name: req.body.name,
     // image: req.body.image,
