@@ -91,7 +91,7 @@ router.get(`/:id`, async (req, res) => {
 //   res.send(product);
 // });
 //// =====================================================================
-//// Upload Image
+//// Upload Image Single
 //// ================================================================
 router.post(`/`, uploadOptions.single("image"), async (req, res) => {
   const category = await Category.findById(req.body.category);
