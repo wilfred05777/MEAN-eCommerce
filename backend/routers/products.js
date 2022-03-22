@@ -155,7 +155,6 @@ router.put("/:id", async (req, res) => {
       image: req.body.image,
       description: req.body.description,
       richDescription: req.body.richDescription,
-      image: req.body.image,
       brand: req.body.brand,
       price: req.body.price,
       category: req.body.category,
@@ -229,5 +228,42 @@ router.get(`/get/featured/:count`, async (req, res) => {
   }
   res.send(products);
 });
+
+// Url: api/v1/products/gallery-images/:id
+// method PUT
+// Access Private
+router.put(
+  `/gallery-images/:id`,
+  uploadOptions.array("images", 10),
+  async (req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      res.status(400).send("Invalid Product Id");
+    }
+
+    const files = req.files;
+    let imagesPaths = [];
+
+    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
+
+    if (files) {
+      files.map((file) => {
+        // imagesPaths.push(file.fileName);
+        imagesPaths.push(`${basePath}${file.filename}`);
+      });
+    }
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        images: imagesPaths,
+      },
+      { new: true }
+    );
+
+    if (!product) {
+      res.status(400).send("The Product cannot be created");
+    }
+    res.send(product);
+  }
+);
 
 module.exports = router;
