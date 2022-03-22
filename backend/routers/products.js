@@ -90,11 +90,17 @@ router.get(`/:id`, async (req, res) => {
 
 //   res.send(product);
 // });
+//// =====================================================================
+//// Upload Image
+//// ================================================================
 router.post(`/`, uploadOptions.single("image"), async (req, res) => {
   const category = await Category.findById(req.body.category);
   if (!category) return res.status(400).send("Invalid Category");
 
-  const fileName = req.fileName;
+  const file = req.file;
+  if (!file) return res.status(400).send("No image in the request");
+
+  const fileName = file.filename;
   const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
   let product = new Product({
     name: req.body.name,
@@ -103,7 +109,7 @@ router.post(`/`, uploadOptions.single("image"), async (req, res) => {
     image: `${basePath}${fileName}`,
     description: req.body.description,
     richDescription: req.body.richDescription,
-    image: req.body.image,
+    // image: req.body.image, <--- Error jud kay na double...
     brand: req.body.brand,
     price: req.body.price,
     category: req.body.category,
@@ -112,6 +118,7 @@ router.post(`/`, uploadOptions.single("image"), async (req, res) => {
     numReviews: req.body.numReviews,
     isFeatured: req.body.isFeatured,
   });
+
   product = await product.save();
 
   if (!product) return res.status(500).send("The product cannot be created");
@@ -132,6 +139,7 @@ router.post(`/`, uploadOptions.single("image"), async (req, res) => {
   // console.log(newProduct);
   // res.send(newProduct);
 });
+//// =====================================================================
 
 router.put("/:id", async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
